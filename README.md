@@ -1,6 +1,8 @@
 # flutter_api_demo
 
-## APIリクエストパラメタのインタフェース
+## API関連
+
+## リクエストパラメタの書式
 
 ```dart
 abstract class RequestParameter {
@@ -11,7 +13,8 @@ abstract class RequestParameter {
 }
 ```
 
-## APIリクエストパラメタ
+
+### 個別のリクエストパラメタ
 
 ```dart
 class GourmetRequestParameter extends Object with RequestParameter  {
@@ -29,7 +32,7 @@ class GourmetRequestParameter extends Object with RequestParameter  {
 }
 ```
 
-## APIクライアント
+### APIクライアント
 
 ```dart
 import 'package:http/http.dart' as http;
@@ -61,7 +64,21 @@ class APIClient {
 }
 ```
 
+### 使い方
+
+```dart
+APIClient().getGourmet().then((response) {
+      _shops.addAll(response.results.shop);
+    }).catchError((err) {
+      //エラー時の処理
+      print(err.toString());
+    }).whenComplete(() => isLoadingComplated = true);
+```
+
+
 ## レスポンスデータ
+
+### レスポンスデータ（最上位階層）
 
 ```dart
 class GourmetResponse {
@@ -102,7 +119,7 @@ class Results {
 }
 ```
 
-## レスポンスデータ（配列がネストしている場合）
+### レスポンスデータ（配列がネストしている場合）
 
 ```dart
 class Shop {
@@ -137,7 +154,7 @@ class Shop {
 }
 ```
 
-## レスポンスデータ（オブジェクト型がネストしている場合）
+### レスポンスデータ（オブジェクト型がネストしている場合）
 
 ```dart
 class Photo {
