@@ -3,7 +3,7 @@ APIクライアントのデモ
 
 ## API関連
 
-### リクエストパラメタの書式
+### リクエストパラメタのI/F（共通部）
 
 ```dart
 abstract class RequestParameter {
