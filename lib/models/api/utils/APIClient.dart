@@ -16,8 +16,11 @@ class APIClient {
             endpoint, requestParameter.path, requestParameter.toJson()))
         .timeout(Duration(seconds: timeoutTime));
 
+    print('REQUEST : https://${endpoint}${requestParameter.path}\n PARAMS : ${requestParameter.toJson()}');
+
     if (response.statusCode == 200) {
       final body = json.decode(response.body);
+      print('RESPONSE : ${response.statusCode} \n${response.body}');
       GourmetResponse results = GourmetResponse.fromJSON(body);
       return results;
     } else {

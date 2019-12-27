@@ -3,6 +3,9 @@ import 'package:flutter_api_demo/models/api/utils/APIClient.dart';
 import 'package:flutter_api_demo/models/api/entities/Shop.dart';
 import 'package:flutter_api_demo/Widgets/ShowLoading.dart';
 
+import '../models/api/GourmetResponse.dart';
+import '../models/api/utils/APIClient.dart';
+
 class MyHomePage extends StatefulWidget {
   final String title;
 
@@ -38,21 +41,32 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildBody(BuildContext context) {
-    if (isLoadingComplated) {
-      return Center(child: _buildShops(context));
-    } else {
-      return Center(
-        child: ShowLoading(),
-      );
-    }
+
+    return FutureBuilder<List<Shop>>(
+
+      future: APIClient().getGourmet().then((response){
+        return response.results.shop;
+      }),
+        builder: (context, snapshot){
+
+          if(snapshot.hasData) {
+
+            return _buildShops(context, snapshot.data);
+          } else if(snapshot.hasError) {
+
+          }
+          return Center(child: CircularProgressIndicator());
+        },
+
+    );
   }
 
-  Widget _buildShops(BuildContext context) {
+  Widget _buildShops(BuildContext context, List<Shop> shops) {
     return ListView.builder(
       padding: const EdgeInsets.all(16.0), //セパレートの左にスペースを開ける
-      itemCount: _shops.length,
+      itemCount: shops.length,
       itemBuilder: (context, i) {
-        return _buildShopRow(_shops[i]);
+        return _buildShopRow(shops[i]);
       },
     );
   }
